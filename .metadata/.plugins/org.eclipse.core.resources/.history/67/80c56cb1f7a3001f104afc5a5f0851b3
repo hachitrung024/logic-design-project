@@ -1,0 +1,18 @@
+/*
+ * global.c
+ *
+ *  Created on: Nov 16, 2024
+ *      Author: hachi
+ */
+
+#include "global.h"
+uint32_t status;
+DHT20_t dht20;   // Định nghĩa cấu trúc DHT20
+status_active active;      // Định nghĩa biến trạng thái hoạt động
+void global_init(){
+	setTimer(0, 1000);
+	status = INIT;
+}
+void global_fsm(){
+
+}

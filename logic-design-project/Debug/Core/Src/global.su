@@ -1,0 +1,2 @@
+global.c:12:6:global_init	8	static
+global.c:17:6:global_fsm	24	static
