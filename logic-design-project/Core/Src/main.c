@@ -63,26 +63,7 @@ static void MX_TIM2_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void float_to_str(float num, char *str, int decimal) {
-    int int_part = (int)num;
-    float fraction = num - (float)int_part;
 
-    // Xử lý số âm
-    if (num < 0) {
-        int_part = -int_part;
-        fraction = -fraction;
-        *str++ = '-';
-    }
-
-    // Chuyển đổi phần nguyên
-    sprintf(str, "%d.", int_part);
-    // Tìm vị trí dấu chấm
-    while (*str != '.' && *str != '\0') str++;
-    str++;
-    // Chuyển đổi phần thập phân
-    int frac_part = (int)(fraction * pow(10, decimal) + 0.5); // Làm tròn
-    sprintf(str, "%0*d", decimal, frac_part);
-}
 /* USER CODE END 0 */
 
 /**
@@ -125,10 +106,6 @@ int main(void)
   global_init();
   while (1)
   {
-	if(isFlagTimer(0)){
-			setTimer(0, 1000);
-			HAL_GPIO_TogglePin(LD0_GPIO_Port, LD0_Pin);
-	  }
 	  global_fsm();
     /* USER CODE END WHILE */
 

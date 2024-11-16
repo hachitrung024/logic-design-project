@@ -9,17 +9,27 @@
 state status;
 DHT20_t dht20;   // Định nghĩa cấu trúc DHT20
 status_active active;      // Định nghĩa biến trạng thái hoạt động
+static char lcd_buffer_1[17];
+static char lcd_buffer_2[17];
+static void lcd_send_buffer(){
+	lcd_goto_XY(1, 0);
+	lcd_send_string(lcd_buffer_1);
+	lcd_goto_XY(2, 0);
+	lcd_send_string(lcd_buffer_2);
+}
 void global_init(){
-	setTimer(0, 1000);
-	status = INIT;
 	lcd_init();
+	DHT20_Init(&dht20, &hi2c1);
+	lcd_send_string("Loading...");
+	setTimer(GLOBAL_TIMER, 100); // Cho khoi dong cac thiet bi
+	status = INIT;
 }
 void global_fsm(){
 	switch(status){
 	case INIT:
-		 DHT20_Init(&dht20, &hi2c1);
-	 	 HAL_Delay(100);
-		 status = CHECK_CONNECTION;
+		if(isFlagTimer(GLOBAL_TIMER)){
+			status = CHECK_CONNECTION;
+		}
 	 	 break;
 	case CHECK_CONNECTION:
 		if(DHT20_IsConnected(&dht20) ){
@@ -71,34 +81,20 @@ void global_fsm(){
 	case CONVERT_DATA:
 		active = DHT20_Convert(&dht20);
 		if(active == DHT20_OK){
-			status = DONE;
+			status = SEND_DATA;
 		}
+		break;
+	case SEND_DATA:
+		snprintf(lcd_buffer_1,17,"Temp: %.2f",dht20.temperature);
+		snprintf(lcd_buffer_2,17,"Humi: %.2f",dht20.humidity);
+		lcd_send_buffer();
+		status = DONE;
 		break;
 	case DONE:
 	{
-	    char temp_str[6];      // Chuỗi để lưu giá trị nhiệt độ
-	    char humidity_str[6];  // Chuỗi để lưu giá trị độ ẩm
-
-	    // Chuyển đổi giá trị float thành chuỗi
-	    float_to_str(dht20.temperature, temp_str, 2);
-	    float_to_str(dht20.humidity, humidity_str, 2);
-	    // Hiển thị giá trị lên màn hình LCD
-	    lcd_goto_XY(1, 0);
-        lcd_send_string("HUM:");
-	    lcd_goto_XY(1, 4);
-	    lcd_send_string(humidity_str);
-
-	    HAL_Delay(50);
-
-	    lcd_goto_XY(2, 0);
-	    lcd_send_string("TEMP:");
-	    lcd_goto_XY(2, 5);
-	    lcd_send_string(temp_str);
 		status = CHECK_READY;
 		break;
 	}
-	case SEND_DATA:
-		break;
 	case ERROR_STATE:
 			if(active == DHT20_ERROR_CONNECT){
 	/*

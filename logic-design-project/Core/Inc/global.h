@@ -12,6 +12,7 @@
 #include "main.h"
 #include "software_timer.h"
 #include <math.h>
+#include <stdio.h>
 I2C_HandleTypeDef hi2c1;
 typedef enum{
 	INIT,
@@ -24,7 +25,10 @@ typedef enum{
 	DONE,
 	ERROR_STATE
 } state;
-void float_to_str(float num, char *str, int decimal) ;
+typedef enum{
+	GLOBAL_TIMER,
+	LCD_TIMER,
+} timerID;
 extern state status;
 void global_init();
 void global_fsm();
