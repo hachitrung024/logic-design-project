@@ -7,30 +7,53 @@
 
 #include "global.h"
 state status;
+static state next;
 DHT20_t dht20;   // Định nghĩa cấu trúc DHT20
 status_active active;      // Định nghĩa biến trạng thái hoạt động
-static char lcd_buffer_1[17];
-static char lcd_buffer_2[17];
+static uint8_t lcd_status;
+char lcd_buffer_1[17];
+char lcd_buffer_2[17];
 static void lcd_send_buffer(){
-	lcd_goto_XY(1, 0);
+	lcd_set_cursor(1, 0);
 	lcd_send_string(lcd_buffer_1);
-	lcd_goto_XY(2, 0);
+	lcd_set_cursor(2, 0);
 	lcd_send_string(lcd_buffer_2);
 }
+
 void global_init(){
-	lcd_init();
+//	lcd_initialize();
 	DHT20_Init(&dht20, &hi2c1);
-	lcd_send_string("Loading...");
-	setTimer(GLOBAL_TIMER, 100); // Cho khoi dong cac thiet bi
+	active=DHT20_OK;
+	setTimer(GLOBAL_TIMER, 1000); // Cho khoi dong cac thiet bi
 	status = INIT;
+	next = INIT;
+}
+
+void watchdog(){
+	if(active == DHT20_ERROR_CONNECT){
+		status = ERROR_STATE;
+		setTimer(GLOBAL_TIMER, 10000);
+		if(active == DHT20_ERROR_CONNECT){
+			snprintf(lcd_buffer_1,17,"DHT20 E_CONNECT");
+			snprintf(lcd_buffer_2,17,"RECONNECTING ");
+			lcd_send_buffer();
+		}
+	}
 }
 void global_fsm(){
 	switch(status){
 	case INIT:
+		lcd_init_fsm();
 		if(isFlagTimer(GLOBAL_TIMER)){
+			setTimer(UPDATE_TIMER, UPDATE_CYCLE);
 			status = CHECK_CONNECTION;
 		}
 	 	 break;
+	case IDLE:
+		if(isFlagTimer(GLOBAL_TIMER)){
+			status = next;
+		}
+		break;
 	case CHECK_CONNECTION:
 		if(DHT20_IsConnected(&dht20) ){
 			active = DHT20_OK;
@@ -44,20 +67,23 @@ void global_fsm(){
 	case CHECK_READY:
 		if((DHT20_ReadStatus(&dht20) & 0x18) != 0x18){
 			DHT20_ResetSensor(&dht20);
-		 	HAL_Delay(1000);
-			status = CHECK_CONNECTION;
+		 	setTimer(GLOBAL_TIMER, 1000);
+			next = CHECK_CONNECTION;
+			status = IDLE;
 		}
 		else {
-			HAL_Delay(10);
-			status = REQUEST_DATA;
+			setTimer(GLOBAL_TIMER, 20);
+			next = REQUEST_DATA;
+			status = IDLE;
 		}
 		break;
 	case REQUEST_DATA:
 		if(HAL_GetTick() - dht20.lastRead >= 1000){
 			active = DHT20_RequestData(&dht20);
 			if (active == DHT20_OK){
-				HAL_Delay(80);
-				status = READ_DATA;
+				setTimer(GLOBAL_TIMER, 80);
+				next = READ_DATA;
+				status = IDLE;
 			}
 		}
 		else{
@@ -85,10 +111,13 @@ void global_fsm(){
 		}
 		break;
 	case SEND_DATA:
-		snprintf(lcd_buffer_1,17,"Temp: %.2f",dht20.temperature);
-		snprintf(lcd_buffer_2,17,"Humi: %.2f",dht20.humidity);
-		lcd_send_buffer();
-		status = DONE;
+		if(isFlagTimer(UPDATE_TIMER)){
+			setTimer(UPDATE_TIMER, UPDATE_CYCLE);
+			snprintf(lcd_buffer_1,17,"Temp: %.2f %cC  ",dht20.temperature,0xDF);
+			snprintf(lcd_buffer_2,17,"Humi: %.2f %%   ",dht20.humidity);
+			lcd_send_buffer();
+			status = DONE;
+		}
 		break;
 	case DONE:
 	{
@@ -96,20 +125,56 @@ void global_fsm(){
 		break;
 	}
 	case ERROR_STATE:
-			if(active == DHT20_ERROR_CONNECT){
-	/*
-	 * 		do{
-				  HAL_Delay(100);
-			  }while(!DHT20_IsConnected(&dht20));
-			  active = DHT20_OK;
-			 */
-			  status = INIT;
+		if(active == DHT20_ERROR_CONNECT){
+			while(!DHT20_IsConnected(&dht20)){
+				if(isFlagTimer(GLOBAL_TIMER)){
+					snprintf(lcd_buffer_1,17,"Time out! DHT20");
+					snprintf(lcd_buffer_2,17,"Can't connect");
+					lcd_send_buffer();
+					Error_Handler();
+				}
+			}
+			setTimer(GLOBAL_TIMER, 100);
+			status = INIT;
+			active = DHT20_OK;
 		  }
-		else{
-		  }
+		if(isFlagTimer(LCD_TIMER)){
+			setTimer(GLOBAL_TIMER, 1000);
+			status = INIT;
+		}
 	    break;
 	default :
 		break;
 	}
-
 }
+//#ifdef LCD_FSM_INIT
+enum{
+	LCD_SEND,
+	LCD_WAIT,
+	LCD_DONE
+};
+static uint8_t init_status = LCD_SEND, cmd_index = 0;
+static uint8_t init_cmds[]={0x33, 0x32, 0x28, 0x01, 0x06, 0x0C, 0x02, 0x80 };
+void lcd_init_fsm(){
+	switch (init_status) {
+		case LCD_SEND:
+			lcd_send_command(init_cmds[cmd_index]);
+			cmd_index++;
+			setTimer(LCD_TIMER, 50);
+			init_status=LCD_WAIT;
+			break;
+		case LCD_WAIT:
+			if(isFlagTimer(LCD_TIMER)){
+				if(cmd_index > 7 ){
+					lcd_send_string("Please wait...");
+					lcd_status = 0;
+					init_status = LCD_DONE;
+				}
+				else init_status = LCD_SEND;
+			}
+			break;
+		default:
+			break;
+	}
+}
+//#endif //LCD_FSM_INIT

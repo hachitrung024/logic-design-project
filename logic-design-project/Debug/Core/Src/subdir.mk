@@ -7,8 +7,8 @@
 C_SRCS += \
 ../Core/Src/dht20.c \
 ../Core/Src/global.c \
-../Core/Src/i2c-lcd.c \
 ../Core/Src/i2c_master.c \
+../Core/Src/lcd.c \
 ../Core/Src/main.c \
 ../Core/Src/software_timer.c \
 ../Core/Src/stm32f1xx_hal_msp.c \
@@ -20,8 +20,8 @@ C_SRCS += \
 OBJS += \
 ./Core/Src/dht20.o \
 ./Core/Src/global.o \
-./Core/Src/i2c-lcd.o \
 ./Core/Src/i2c_master.o \
+./Core/Src/lcd.o \
 ./Core/Src/main.o \
 ./Core/Src/software_timer.o \
 ./Core/Src/stm32f1xx_hal_msp.o \
@@ -33,8 +33,8 @@ OBJS += \
 C_DEPS += \
 ./Core/Src/dht20.d \
 ./Core/Src/global.d \
-./Core/Src/i2c-lcd.d \
 ./Core/Src/i2c_master.d \
+./Core/Src/lcd.d \
 ./Core/Src/main.d \
 ./Core/Src/software_timer.d \
 ./Core/Src/stm32f1xx_hal_msp.d \

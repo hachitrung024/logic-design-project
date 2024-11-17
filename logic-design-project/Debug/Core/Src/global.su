@@ -1,3 +1,5 @@
-global.c:14:13:lcd_send_buffer	8	static
-global.c:20:6:global_init	8	static
-global.c:27:6:global_fsm	16	static
+global.c:16:13:lcd_send_buffer	8	static
+global.c:23:6:global_init	8	static
+global.c:32:6:watchdog	8	static
+global.c:43:6:global_fsm	24	static
+global.c:158:6:lcd_init_fsm	8	static

@@ -23,6 +23,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "global.h"
+#include "lcd.h"
 #include <stdio.h>
 /* USER CODE END Includes */
 
@@ -104,8 +105,10 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   global_init();
+
   while (1)
   {
+	  watchdog();
 	  global_fsm();
     /* USER CODE END WHILE */
 
