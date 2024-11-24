@@ -5,28 +5,34 @@ Cấu hình tần số hệ thống: **48MHz**
 
 ---
 
-## Bước 2: Pinout & Configuration
+## Bước 2: Thay đổi timer interupt ở TIM2
+Cài đặt các tham số để đặt **timer = 10ms**:
+- Prescaler: `4799`
+- Counter Period: `99`
+  
+---
+## Bước 3: Pinout & Configuration
 1. Vào mục **Timer** -> chọn **TIM3**:
    - Clock Source: `Internal Clock`
    - Channel1: `PWM Generation CH1`
 
 ---
 
-## Bước 3: Parameter Setting (TIMER)
+## Bước 4: Parameter Setting (TIMER)
 Cài đặt các tham số:
 - Prescaler: `20-1`
 - Counter Period: `3-1`
 
 ---
 
-## Bước 4: DMA Setting (TIMER)
+## Bước 5: DMA Setting (TIMER)
 1. Thêm DMA Request:
    - Request: `TIM3_CH1/TRIG`
    - Direction: `Memory To Peripheral`
 
 ---
 
-## Bước 5: Thêm hàm xử lý PWM trong main.c
+## Bước 6: Thêm hàm xử lý PWM trong main.c
 
 Thêm đoạn mã sau vào phần `/* USER CODE BEGIN 4 */` trong file `main.c`:
 
@@ -41,7 +47,7 @@ void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim)
 }
 ```
 
-## Bước 6: Thêm trạng thái ở global
+## Bước 7: Thêm trạng thái ở global
 Thêm trạng thái `UPDATE_LED`
 
 `global.h`
@@ -69,5 +75,5 @@ typedef enum{
 	    status = CHECK_READY;
 	    break;
 ```
-## Bước 7: Thêm mã nguồn led_RGB.h và led_RGB.c để kết thúc cập nhật.
+## Bước 8: Thêm mã nguồn led_RGB.h và led_RGB.c để kết thúc cập nhật.
 
