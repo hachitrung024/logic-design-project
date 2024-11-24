@@ -121,11 +121,14 @@ void global_fsm(){
 	        status = UPDATE_LED;
 	    }
 	    break;
-	case DONE:
-	{
-		status = CHECK_READY;
-		break;
-	}
+	case UPDATE_LED:
+	    // Điều chỉnh LED 1 (nhiệt độ) và LED 2 (độ ẩm)
+	    setting_led_RGB((int)dht20.temperature, (int)dht20.humidity);
+
+	    // Sau khi cập nhật LED, quay lại trạng thái chờ
+	    status = CHECK_READY;
+	    break;
+
 	case ERROR_STATE:
 		if(active == DHT20_ERROR_CONNECT){
 			while(!DHT20_IsConnected(&dht20)){
@@ -144,14 +147,6 @@ void global_fsm(){
 			setTimer(GLOBAL_TIMER, 1000);
 			status = INIT;
 		}
-	    break;
-
-	case UPDATE_LED:
-	    // Điều chỉnh LED 1 (nhiệt độ) và LED 2 (độ ẩm)
-	    setting_led_RGB((int)dht20.temperature, (int)dht20.humidity);
-
-	    // Sau khi cập nhật LED, quay lại trạng thái chờ
-	    status = CHECK_READY;
 	    break;
 
 	default :

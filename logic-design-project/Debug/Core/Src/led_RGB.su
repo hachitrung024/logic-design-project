@@ -2,4 +2,7 @@ led_RGB.c:9:6:resetAllLED	16	static
 led_RGB.c:12:6:setAllLED	16	static
 led_RGB.c:15:6:setLED	40	static
 led_RGB.c:27:6:ws2812Send	8	static
-led_RGB.c:35:6:setting_led_RGB	40	static
+led_RGB.c:35:6:interpolateColor	40	static
+led_RGB.c:46:6:setTemperatureColor	56	static
+led_RGB.c:67:6:setHumidityColor	56	static
+led_RGB.c:92:6:setting_led_RGB	24	static

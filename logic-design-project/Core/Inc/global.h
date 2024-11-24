@@ -25,7 +25,6 @@ typedef enum{
     READ_DATA,
     CONVERT_DATA,
 	SEND_DATA,
-	DONE,
 	ERROR_STATE,
 	UPDATE_LED, // Thêm trạng thái
 } state;
