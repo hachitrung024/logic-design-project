@@ -26,29 +26,46 @@ Cài đặt các tham số:
 
 ---
 
-## B5: Thêm hàm xử lý PWM trong main.c
-Chèn đoạn mã sau vào mục `/* USER CODE BEGIN 4 */`:
+## Bước 5: Thêm hàm xử lý PWM trong main.c
+
+Thêm đoạn mã sau vào phần `/* USER CODE BEGIN 4 */` trong file `main.c`:
 
 ```c
 void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim)
 {
-    HAL_TIM_PWM_Stop_DMA(&htim3, TIM_CHANNEL_1);
-    htim3.Instance->CCR1 = 0;
+    if (htim->Instance == TIM3)
+    {
+        HAL_TIM_PWM_Stop_DMA(&htim3, TIM_CHANNEL_1);
+        htim3.Instance->CCR1 = 0;
+    }
 }
+```
 
-## B6: Thêm trạng thái trong global.h và global.c
-1. **global.h**:
-   ```c
-   typedef enum {
-       INIT,
-       IDLE,
-       CHECK_CONNECTION,
-       CHECK_READY,
-       REQUEST_DATA,
-       READ_DATA,
-       CONVERT_DATA,
-       SEND_DATA,
-       ERROR_STATE,
-       UPDATE_LED, // Thêm trạng thái
-   } state;
+## Bước 6: Thêm trạng thái ở global
+Thêm trạng thái `UPDATE_LED`
+`global.h`
+```c
+typedef enum{
+	INIT,
+	IDLE,
+	CHECK_CONNECTION,
+	CHECK_READY,
+    REQUEST_DATA,
+    READ_DATA,
+    CONVERT_DATA,
+	SEND_DATA,
+	ERROR_STATE,
+	UPDATE_LED, // Thêm trạng thái
+} state;
+```
+`globlal.c`
+```c
+	case UPDATE_LED:
+	    // Dieu chinh LED 1 (nhiet do) và LED 2 (do am)
+	    setting_led_RGB((int)dht20.temperature, (int)dht20.humidity);
+
+	    status = CHECK_READY;
+	    break;
+```
+## Bước 7: Thêm mã nguồn led_RGB.h và led_RGB.c để kết thúc cập nhật.
 
