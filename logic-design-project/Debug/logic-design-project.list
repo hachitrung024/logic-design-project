@@ -2407,7 +2407,6 @@ void global_fsm(){
  8001720:	4620      	mov	r0, r4
  8001722:	f000 fb6d 	bl	8001e00 <setting_led_RGB>
 
-	    // Sau khi cập nhật LED, quay lại trạng thái chờ
 	    status = CHECK_READY;
  8001726:	4b26      	ldr	r3, [pc, #152]	; (80017c0 <global_fsm+0x2a8>)
  8001728:	2203      	movs	r2, #3
@@ -3256,7 +3255,7 @@ void setHumidityColor(int humidity, uint8_t *red, uint8_t *green, uint8_t *blue)
  8001ce2:	68fb      	ldr	r3, [r7, #12]
  8001ce4:	2b31      	cmp	r3, #49	; 0x31
  8001ce6:	dc16      	bgt.n	8001d16 <setHumidityColor+0x42>
-        // Chuyển từ vàng sang cam sang đỏ khi độ ẩm < 50
+        // Chuyển từ vàng sang cam sang đỏ
         interpolateColor(0, 50, humidity, 255, 0, 0, 255, 255, 0, red, green, blue);
  8001ce8:	683b      	ldr	r3, [r7, #0]
  8001cea:	9307      	str	r3, [sp, #28]

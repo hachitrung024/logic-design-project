@@ -30,5 +30,4 @@ void setTemperatureColor(int temperature, uint8_t *red, uint8_t *green, uint8_t 
 void setHumidityColor(int humidity, uint8_t *red, uint8_t *green, uint8_t *blue);
 void ws2812Send(void);
 
-
 #endif /* INC_LED_RGB_H_ */

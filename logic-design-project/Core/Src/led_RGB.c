@@ -66,7 +66,7 @@ void setTemperatureColor(int temperature, uint8_t *red, uint8_t *green, uint8_t 
 
 void setHumidityColor(int humidity, uint8_t *red, uint8_t *green, uint8_t *blue) {
     if (humidity < 50) {
-        // Chuyển từ vàng sang cam sang đỏ khi độ ẩm < 50
+        // Chuyển từ vàng sang cam sang đỏ
         interpolateColor(0, 50, humidity, 255, 0, 0, 255, 255, 0, red, green, blue);
     } else if (humidity >= 50 && humidity < 70) {
         // Chuyển từ xanh lá sang xanh dương

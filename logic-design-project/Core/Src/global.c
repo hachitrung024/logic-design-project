@@ -125,7 +125,6 @@ void global_fsm(){
 	    // Điều chỉnh LED 1 (nhiệt độ) và LED 2 (độ ẩm)
 	    setting_led_RGB((int)dht20.temperature, (int)dht20.humidity);
 
-	    // Sau khi cập nhật LED, quay lại trạng thái chờ
 	    status = CHECK_READY;
 	    break;
 
