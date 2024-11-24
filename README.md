@@ -1,25 +1,25 @@
 # Hướng dẫn cấu hình và cập nhật hệ thống
 
-## B1: Thay đổi tần số hệ thống
+## Bước 1: Thay đổi tần số hệ thống
 Cấu hình tần số hệ thống: **48MHz**
 
 ---
 
-## B2: Pinout & Configuration
+## Bước 2: Pinout & Configuration
 1. Vào mục **Timer** -> chọn **TIM3**:
    - Clock Source: `Internal Clock`
    - Channel1: `PWM Generation CH1`
 
 ---
 
-## B3: Parameter Setting (TIMER)
+## Bước 3: Parameter Setting (TIMER)
 Cài đặt các tham số:
 - Prescaler: `20-1`
 - Counter Period: `3-1`
 
 ---
 
-## B4: DMA Setting (TIMER)
+## Bước 4: DMA Setting (TIMER)
 1. Thêm DMA Request:
    - Request: `TIM3_CH1/TRIG`
    - Direction: `Memory To Peripheral`
