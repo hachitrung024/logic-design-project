@@ -35,3 +35,20 @@ void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim)
     HAL_TIM_PWM_Stop_DMA(&htim3, TIM_CHANNEL_1);
     htim3.Instance->CCR1 = 0;
 }
+
+## B6: Thêm trạng thái trong global.h và global.c
+1. **global.h**:
+   ```c
+   typedef enum {
+       INIT,
+       IDLE,
+       CHECK_CONNECTION,
+       CHECK_READY,
+       REQUEST_DATA,
+       READ_DATA,
+       CONVERT_DATA,
+       SEND_DATA,
+       ERROR_STATE,
+       UPDATE_LED, // Thêm trạng thái
+   } state;
+
