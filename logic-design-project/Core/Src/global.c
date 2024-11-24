@@ -111,14 +111,16 @@ void global_fsm(){
 		}
 		break;
 	case SEND_DATA:
-		if(isFlagTimer(UPDATE_TIMER)){
-			setTimer(UPDATE_TIMER, UPDATE_CYCLE);
-			snprintf(lcd_buffer_1,17,"Temp: %.2f %cC  ",dht20.temperature,0xDF);
-			snprintf(lcd_buffer_2,17,"Humi: %.2f %%   ",dht20.humidity);
-			lcd_send_buffer();
-			status = DONE;
-		}
-		break;
+	    if (isFlagTimer(UPDATE_TIMER)) {
+	        setTimer(UPDATE_TIMER, UPDATE_CYCLE);
+	        snprintf(lcd_buffer_1, 17, "Temp: %.2f %cC  ", dht20.temperature, 0xDF);
+	        snprintf(lcd_buffer_2, 17, "Humi: %.2f %%   ", dht20.humidity);
+	        lcd_send_buffer();
+
+	        // Chuyển sang trạng thái điều khiển LED
+	        status = UPDATE_LED;
+	    }
+	    break;
 	case DONE:
 	{
 		status = CHECK_READY;
@@ -143,6 +145,15 @@ void global_fsm(){
 			status = INIT;
 		}
 	    break;
+
+	case UPDATE_LED:
+	    // Điều chỉnh LED 1 (nhiệt độ) và LED 2 (độ ẩm)
+	    setting_led_RGB((int)dht20.temperature, (int)dht20.humidity);
+
+	    // Sau khi cập nhật LED, quay lại trạng thái chờ
+	    status = CHECK_READY;
+	    break;
+
 	default :
 		break;
 	}
@@ -173,6 +184,7 @@ void lcd_init_fsm(){
 				else init_status = LCD_SEND;
 			}
 			break;
+
 		default:
 			break;
 	}

@@ -9,6 +9,7 @@ C_SRCS += \
 ../Core/Src/global.c \
 ../Core/Src/i2c_master.c \
 ../Core/Src/lcd.c \
+../Core/Src/led_RGB.c \
 ../Core/Src/main.c \
 ../Core/Src/software_timer.c \
 ../Core/Src/stm32f1xx_hal_msp.c \
@@ -22,6 +23,7 @@ OBJS += \
 ./Core/Src/global.o \
 ./Core/Src/i2c_master.o \
 ./Core/Src/lcd.o \
+./Core/Src/led_RGB.o \
 ./Core/Src/main.o \
 ./Core/Src/software_timer.o \
 ./Core/Src/stm32f1xx_hal_msp.o \
@@ -35,6 +37,7 @@ C_DEPS += \
 ./Core/Src/global.d \
 ./Core/Src/i2c_master.d \
 ./Core/Src/lcd.d \
+./Core/Src/led_RGB.d \
 ./Core/Src/main.d \
 ./Core/Src/software_timer.d \
 ./Core/Src/stm32f1xx_hal_msp.d \

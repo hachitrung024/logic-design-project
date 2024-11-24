@@ -50,6 +50,9 @@ default.size.stdout \
 OBJDUMP_LIST += \
 logic-design-project.list \
 
+OBJCOPY_HEX += \
+logic-design-project.hex \
+
 OBJCOPY_BIN += \
 logic-design-project.bin \
 
@@ -61,8 +64,8 @@ all: main-build
 main-build: logic-design-project.elf secondary-outputs
 
 # Tool invocations
-logic-design-project.elf: $(OBJS) $(USER_OBJS) C:\241\MPU\ MCU\logic-design-project\logic-design-project\STM32F103RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "logic-design-project.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\241\MPU MCU\logic-design-project\logic-design-project\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="logic-design-project.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+logic-design-project.elf: $(OBJS) $(USER_OBJS) E:\Document_STM32_SIMULATION\Digital\ Project\logic-design-project\STM32F103RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "logic-design-project.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"E:\Document_STM32_SIMULATION\Digital Project\logic-design-project\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="logic-design-project.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -76,6 +79,11 @@ logic-design-project.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_
 	@echo 'Finished building: $@'
 	@echo ' '
 
+logic-design-project.hex: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O ihex $(EXECUTABLES) "logic-design-project.hex"
+	@echo 'Finished building: $@'
+	@echo ' '
+
 logic-design-project.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "logic-design-project.bin"
 	@echo 'Finished building: $@'
@@ -83,10 +91,10 @@ logic-design-project.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_D
 
 # Other Targets
 clean:
-	-$(RM) $(SIZE_OUTPUT)$(OBJDUMP_LIST)$(EXECUTABLES)$(OBJS)$(S_DEPS)$(S_UPPER_DEPS)$(C_DEPS)$(OBJCOPY_BIN) logic-design-project.elf
+	-$(RM) $(OBJCOPY_HEX)$(SIZE_OUTPUT)$(OBJDUMP_LIST)$(EXECUTABLES)$(OBJS)$(S_DEPS)$(S_UPPER_DEPS)$(C_DEPS)$(OBJCOPY_BIN) logic-design-project.elf
 	-@echo ' '
 
-secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_BIN)
+secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_HEX) $(OBJCOPY_BIN)
 
 fail-specified-linker-script-missing:
 	@echo 'Error: Cannot find the specified linker script. Check the linker settings in the build configuration.'

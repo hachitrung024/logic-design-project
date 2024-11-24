@@ -13,6 +13,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <lcd.h>
+#include "led_RGB.h"
 I2C_HandleTypeDef hi2c1;
 #define UPDATE_CYCLE 1000
 typedef enum{
@@ -26,6 +27,7 @@ typedef enum{
 	SEND_DATA,
 	DONE,
 	ERROR_STATE,
+	UPDATE_LED, // Thêm trạng thái
 } state;
 typedef enum{
 	GLOBAL_TIMER,
