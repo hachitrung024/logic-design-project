@@ -43,6 +43,7 @@ void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim)
 
 ## Bước 6: Thêm trạng thái ở global
 Thêm trạng thái `UPDATE_LED`
+
 `global.h`
 ```c
 typedef enum{
@@ -50,9 +51,9 @@ typedef enum{
 	IDLE,
 	CHECK_CONNECTION,
 	CHECK_READY,
-    REQUEST_DATA,
-    READ_DATA,
-    CONVERT_DATA,
+    	REQUEST_DATA,
+    	READ_DATA,
+    	CONVERT_DATA,
 	SEND_DATA,
 	ERROR_STATE,
 	UPDATE_LED, // Thêm trạng thái
