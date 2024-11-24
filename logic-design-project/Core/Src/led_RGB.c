@@ -13,13 +13,13 @@ void setAllLED (void) {
 	for (int i = 0; i < 24 * NUM_OF_LED; i++) pwmData[i] = 2;
 }
 void setLED (int LEDposition, int Red, int Green, int Blue) {
-	for (int i = 7; i >= 0; i--) { // Set the first 8 out of 24 to green
+	for (int i = 7; i >= 0; i--) { // 8 bit dau - xanh la
 	        pwmData[24*LEDposition + 7 - i] = ((Green >> i) & 1) + 1;
 	    }
-	for (int i = 7; i >= 0; i--) { // Set the second 8 out of 24 to red
+	for (int i = 7; i >= 0; i--) { // 8 bit - do
 	        pwmData[24*LEDposition + 15 - i] = ((Red >> i) & 1) + 1;
 	}
-	for (int i = 7; i >= 0; i--) { // Set the third 8 out of 24 to blue
+	for (int i = 7; i >= 0; i--) { // 8 bit cuoi - xanh duong
 	        pwmData[24*LEDposition + 23 - i] = ((Blue >> i) & 1) + 1;
 	}
 }
@@ -45,13 +45,13 @@ void interpolateColor(int startValue, int endValue, int currentValue,
 
 void setTemperatureColor(int temperature, uint8_t *red, uint8_t *green, uint8_t *blue) {
     if (temperature < 30 && temperature > 20) {
-        // Xanh dương nhạt chuyển sang đậm
+        // Xanh duong nhat chuyen sang xanh duong dam
         interpolateColor(20, 30, temperature, 0, 0, 255, 0, 0, 128, red, green, blue);
     } else if (temperature >= 30 && temperature < 35) {
-        // Vàng sang cam
+        // Vang sang cam
         interpolateColor(30, 35, temperature, 255, 255, 0, 255, 128, 0, red, green, blue);
     } else if (temperature >= 35 && temperature <= 40) {
-        // Cam sang đỏ
+        // Cam sang đo
         interpolateColor(35, 40, temperature, 255, 128, 0, 255, 0, 0, red, green, blue);
     } else if (temperature > 40) {
     	*red = 255;
@@ -66,19 +66,19 @@ void setTemperatureColor(int temperature, uint8_t *red, uint8_t *green, uint8_t 
 
 void setHumidityColor(int humidity, uint8_t *red, uint8_t *green, uint8_t *blue) {
     if (humidity < 50) {
-        // Chuyển từ vàng sang cam sang đỏ
+        // Chuyen tu vang sang cam sang do
         interpolateColor(0, 50, humidity, 255, 0, 0, 255, 255, 0, red, green, blue);
     } else if (humidity >= 50 && humidity < 70) {
-        // Chuyển từ xanh lá sang xanh dương
+        // Chuyen tu xanh la sang xanh duong
         interpolateColor(50, 70, humidity, 0, 0, 0, 0, 0, 255, red, green, blue);
     } else if (humidity >= 70 && humidity < 80) {
-        // Chuyển từ vàng sang cam
+        // Chuyen tu vang sang cam
         interpolateColor(70, 80, humidity, 255, 255, 0, 255, 128, 0, red, green, blue);
     } else if (humidity >= 80 && humidity < 90) {
-        // Chuyển từ cam sang đỏ
+        // Chuyen tu cam sang đo
         interpolateColor(80, 90, humidity, 255, 128, 0, 255, 0, 0, red, green, blue);
     } else if (humidity >= 90 && humidity <= 100) {
-        // Đỏ rực
+        // Do
         *red = 255;
         *green = 0;
         *blue = 0;
@@ -92,8 +92,8 @@ void setHumidityColor(int humidity, uint8_t *red, uint8_t *green, uint8_t *blue)
 void setting_led_RGB(int temperature, int humidity) {
     resetAllLED();
 
-    uint8_t red1 = 0, green1 = 0, blue1 = 0; // LED 1 - Nhiệt độ
-    uint8_t red3 = 0, green3 = 0, blue3 = 0; // LED 3 - Độ ẩm
+    uint8_t red1 = 0, green1 = 0, blue1 = 0; // LED 1 - Nhiet do
+    uint8_t red3 = 0, green3 = 0, blue3 = 0; // LED 3 - Do am
 
     setTemperatureColor(temperature, &red1, &green1, &blue1);
     setHumidityColor(humidity, &red3, &green3, &blue3);

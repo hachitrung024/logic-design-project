@@ -117,12 +117,12 @@ void global_fsm(){
 	        snprintf(lcd_buffer_2, 17, "Humi: %.2f %%   ", dht20.humidity);
 	        lcd_send_buffer();
 
-	        // Chuyển sang trạng thái điều khiển LED
+	        // Chuyen sang LED de dieu khien
 	        status = UPDATE_LED;
 	    }
 	    break;
 	case UPDATE_LED:
-	    // Điều chỉnh LED 1 (nhiệt độ) và LED 2 (độ ẩm)
+	    // Dieu chinh LED 1 (nhiet do) và LED 2 (do am)
 	    setting_led_RGB((int)dht20.temperature, (int)dht20.humidity);
 
 	    status = CHECK_READY;

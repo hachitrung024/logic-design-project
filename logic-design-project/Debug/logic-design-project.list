@@ -2382,7 +2382,7 @@ void global_fsm(){
 	        lcd_send_buffer();
  80016fa:	f7ff feab 	bl	8001454 <lcd_send_buffer>
 
-	        // Chuyển sang trạng thái điều khiển LED
+	        // Chuyen sang LED de dieu khien
 	        status = UPDATE_LED;
  80016fe:	4b30      	ldr	r3, [pc, #192]	; (80017c0 <global_fsm+0x2a8>)
  8001700:	2209      	movs	r2, #9
@@ -2391,7 +2391,7 @@ void global_fsm(){
 	    break;
  8001704:	e055      	b.n	80017b2 <global_fsm+0x29a>
 	case UPDATE_LED:
-	    // Điều chỉnh LED 1 (nhiệt độ) và LED 2 (độ ẩm)
+	    // Dieu chinh LED 1 (nhiet do) và LED 2 (do am)
 	    setting_led_RGB((int)dht20.temperature, (int)dht20.humidity);
  8001706:	4b30      	ldr	r3, [pc, #192]	; (80017c8 <global_fsm+0x2b0>)
  8001708:	689b      	ldr	r3, [r3, #8]
@@ -2852,7 +2852,7 @@ void setLED (int LEDposition, int Red, int Green, int Blue) {
  80019ec:	60b9      	str	r1, [r7, #8]
  80019ee:	607a      	str	r2, [r7, #4]
  80019f0:	603b      	str	r3, [r7, #0]
-	for (int i = 7; i >= 0; i--) { // Set the first 8 out of 24 to green
+	for (int i = 7; i >= 0; i--) { // 8 bit dau - xanh la
  80019f2:	2307      	movs	r3, #7
  80019f4:	61fb      	str	r3, [r7, #28]
  80019f6:	e017      	b.n	8001a28 <setLED+0x44>
@@ -2875,7 +2875,7 @@ void setLED (int LEDposition, int Red, int Green, int Blue) {
  8001a1a:	b291      	uxth	r1, r2
  8001a1c:	4a26      	ldr	r2, [pc, #152]	; (8001ab8 <setLED+0xd4>)
  8001a1e:	f822 1013 	strh.w	r1, [r2, r3, lsl #1]
-	for (int i = 7; i >= 0; i--) { // Set the first 8 out of 24 to green
+	for (int i = 7; i >= 0; i--) { // 8 bit dau - xanh la
  8001a22:	69fb      	ldr	r3, [r7, #28]
  8001a24:	3b01      	subs	r3, #1
  8001a26:	61fb      	str	r3, [r7, #28]
@@ -2883,7 +2883,7 @@ void setLED (int LEDposition, int Red, int Green, int Blue) {
  8001a2a:	2b00      	cmp	r3, #0
  8001a2c:	dae4      	bge.n	80019f8 <setLED+0x14>
 	    }
-	for (int i = 7; i >= 0; i--) { // Set the second 8 out of 24 to red
+	for (int i = 7; i >= 0; i--) { // 8 bit - do
  8001a2e:	2307      	movs	r3, #7
  8001a30:	61bb      	str	r3, [r7, #24]
  8001a32:	e018      	b.n	8001a66 <setLED+0x82>
@@ -2906,7 +2906,7 @@ void setLED (int LEDposition, int Red, int Green, int Blue) {
  8001a58:	b291      	uxth	r1, r2
  8001a5a:	4a17      	ldr	r2, [pc, #92]	; (8001ab8 <setLED+0xd4>)
  8001a5c:	f822 1013 	strh.w	r1, [r2, r3, lsl #1]
-	for (int i = 7; i >= 0; i--) { // Set the second 8 out of 24 to red
+	for (int i = 7; i >= 0; i--) { // 8 bit - do
  8001a60:	69bb      	ldr	r3, [r7, #24]
  8001a62:	3b01      	subs	r3, #1
  8001a64:	61bb      	str	r3, [r7, #24]
@@ -2914,7 +2914,7 @@ void setLED (int LEDposition, int Red, int Green, int Blue) {
  8001a68:	2b00      	cmp	r3, #0
  8001a6a:	dae3      	bge.n	8001a34 <setLED+0x50>
 	}
-	for (int i = 7; i >= 0; i--) { // Set the third 8 out of 24 to blue
+	for (int i = 7; i >= 0; i--) { // 8 bit cuoi - xanh duong
  8001a6c:	2307      	movs	r3, #7
  8001a6e:	617b      	str	r3, [r7, #20]
  8001a70:	e018      	b.n	8001aa4 <setLED+0xc0>
@@ -2937,7 +2937,7 @@ void setLED (int LEDposition, int Red, int Green, int Blue) {
  8001a96:	b291      	uxth	r1, r2
  8001a98:	4a07      	ldr	r2, [pc, #28]	; (8001ab8 <setLED+0xd4>)
  8001a9a:	f822 1013 	strh.w	r1, [r2, r3, lsl #1]
-	for (int i = 7; i >= 0; i--) { // Set the third 8 out of 24 to blue
+	for (int i = 7; i >= 0; i--) { // 8 bit cuoi - xanh duong
  8001a9e:	697b      	ldr	r3, [r7, #20]
  8001aa0:	3b01      	subs	r3, #1
  8001aa2:	617b      	str	r3, [r7, #20]
@@ -3113,7 +3113,7 @@ void setTemperatureColor(int temperature, uint8_t *red, uint8_t *green, uint8_t 
  8001bf6:	68fb      	ldr	r3, [r7, #12]
  8001bf8:	2b14      	cmp	r3, #20
  8001bfa:	dd16      	ble.n	8001c2a <setTemperatureColor+0x48>
-        // Xanh dương nhạt chuyển sang đậm
+        // Xanh duong nhat chuyen sang xanh duong dam
         interpolateColor(20, 30, temperature, 0, 0, 255, 0, 0, 128, red, green, blue);
  8001bfc:	683b      	ldr	r3, [r7, #0]
  8001bfe:	9307      	str	r3, [sp, #28]
@@ -3144,7 +3144,7 @@ void setTemperatureColor(int temperature, uint8_t *red, uint8_t *green, uint8_t 
  8001c30:	68fb      	ldr	r3, [r7, #12]
  8001c32:	2b22      	cmp	r3, #34	; 0x22
  8001c34:	dc16      	bgt.n	8001c64 <setTemperatureColor+0x82>
-        // Vàng sang cam
+        // Vang sang cam
         interpolateColor(30, 35, temperature, 255, 255, 0, 255, 128, 0, red, green, blue);
  8001c36:	683b      	ldr	r3, [r7, #0]
  8001c38:	9307      	str	r3, [sp, #28]
@@ -3175,7 +3175,7 @@ void setTemperatureColor(int temperature, uint8_t *red, uint8_t *green, uint8_t 
  8001c6a:	68fb      	ldr	r3, [r7, #12]
  8001c6c:	2b28      	cmp	r3, #40	; 0x28
  8001c6e:	dc16      	bgt.n	8001c9e <setTemperatureColor+0xbc>
-        // Cam sang đỏ
+        // Cam sang đo
         interpolateColor(35, 40, temperature, 255, 128, 0, 255, 0, 0, red, green, blue);
  8001c70:	683b      	ldr	r3, [r7, #0]
  8001c72:	9307      	str	r3, [sp, #28]
@@ -3255,7 +3255,7 @@ void setHumidityColor(int humidity, uint8_t *red, uint8_t *green, uint8_t *blue)
  8001ce2:	68fb      	ldr	r3, [r7, #12]
  8001ce4:	2b31      	cmp	r3, #49	; 0x31
  8001ce6:	dc16      	bgt.n	8001d16 <setHumidityColor+0x42>
-        // Chuyển từ vàng sang cam sang đỏ
+        // Chuyen tu vang sang cam sang do
         interpolateColor(0, 50, humidity, 255, 0, 0, 255, 255, 0, red, green, blue);
  8001ce8:	683b      	ldr	r3, [r7, #0]
  8001cea:	9307      	str	r3, [sp, #28]
@@ -3425,14 +3425,14 @@ void setting_led_RGB(int temperature, int humidity) {
     resetAllLED();
  8001e0a:	f7ff fdd1 	bl	80019b0 <resetAllLED>
 
-    uint8_t red1 = 0, green1 = 0, blue1 = 0; // LED 1 - Nhiệt độ
+    uint8_t red1 = 0, green1 = 0, blue1 = 0; // LED 1 - Nhiet do
  8001e0e:	2300      	movs	r3, #0
  8001e10:	73fb      	strb	r3, [r7, #15]
  8001e12:	2300      	movs	r3, #0
  8001e14:	73bb      	strb	r3, [r7, #14]
  8001e16:	2300      	movs	r3, #0
  8001e18:	737b      	strb	r3, [r7, #13]
-    uint8_t red3 = 0, green3 = 0, blue3 = 0; // LED 3 - Độ ẩm
+    uint8_t red3 = 0, green3 = 0, blue3 = 0; // LED 3 - Do am
  8001e1a:	2300      	movs	r3, #0
  8001e1c:	733b      	strb	r3, [r7, #12]
  8001e1e:	2300      	movs	r3, #0
