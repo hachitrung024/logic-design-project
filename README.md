@@ -59,7 +59,8 @@ typedef enum{
 	UPDATE_LED, // Thêm trạng thái
 } state;
 ```
-`globlal.c``global_fsm()`
+`globlal.c`
+`global_fsm()`
 ```c
 	case UPDATE_LED:
 	    // Dieu chinh LED 1 (nhiet do) và LED 2 (do am)
