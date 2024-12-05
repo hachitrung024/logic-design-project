@@ -130,41 +130,5 @@ uint8_t DHT20_CRC8(uint8_t *ptr, uint8_t len) {
 return crc;
 }
 
-uint8_t DHT20_ResetSensor(DHT20_t *dht20) {
-uint8_t count = 0;
 
-// Đọc trạng thái và reset nếu không phải là 0x18
-if ((DHT20_ReadStatus(dht20) & 0x18) != 0x18) {
-    count++;
-    if (DHT20_ResetRegister(dht20, 0x1B)) count++;
-    if (DHT20_ResetRegister(dht20, 0x1C)) count++;
-    if (DHT20_ResetRegister(dht20, 0x1E)) count++;
-    HAL_Delay(10);
-}
-return count;
-}
 
-uint8_t DHT20_ResetRegister(DHT20_t *dht20, uint8_t reg) {
-uint8_t value[3] = {0};
-
-// Bắt đầu giao tiếp với cảm biến để reset
-if (HAL_I2C_Master_Transmit(dht20->hi2c, Slave_address_dht20 << 1, &reg, 1, HAL_MAX_DELAY) != HAL_OK) {
-    return 0;
-}
-HAL_Delay(5);
-
-// Đọc giá trị từ cảm biến
-if (HAL_I2C_Master_Receive(dht20->hi2c, Slave_address_dht20 << 1, value, 3, HAL_MAX_DELAY) != HAL_OK) {
-    return 0;
-}
-HAL_Delay(10);
-
-// Ghi lại giá trị điều chỉnh vào thanh ghi
-uint8_t buffer[3] = {0xB0 | reg, value[1], value[2]};
-if (HAL_I2C_Master_Transmit(dht20->hi2c, Slave_address_dht20 << 1, buffer, 3, HAL_MAX_DELAY) != HAL_OK) {
-    return 0;
-}
-HAL_Delay(5);
-
-return 1;
-}

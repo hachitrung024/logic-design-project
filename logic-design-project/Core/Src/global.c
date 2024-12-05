@@ -45,6 +45,7 @@ void global_fsm(){
 	case INIT:
 		lcd_init_fsm();
 		if(isFlagTimer(GLOBAL_TIMER)){
+			setTimer(DHT20_CHECK_CONECT_TIMER, 100);
 			setTimer(UPDATE_TIMER, UPDATE_CYCLE);
 			status = CHECK_CONNECTION;
 		}
@@ -66,10 +67,9 @@ void global_fsm(){
 		break;
 	case CHECK_READY:
 		if((DHT20_ReadStatus(&dht20) & 0x18) != 0x18){
-			DHT20_ResetSensor(&dht20);
 		 	setTimer(GLOBAL_TIMER, 1000);
-			next = CHECK_CONNECTION;
-			status = IDLE;
+			next = ERROR_STATE;
+			status = DHT20_ERROR_CONNECT;
 		}
 		else {
 			setTimer(GLOBAL_TIMER, 20);
@@ -131,11 +131,10 @@ void global_fsm(){
 					snprintf(lcd_buffer_1,17,"Time out! DHT20");
 					snprintf(lcd_buffer_2,17,"Can't connect");
 					lcd_send_buffer();
-					Error_Handler();
 				}
 			}
-			setTimer(GLOBAL_TIMER, 100);
-			status = INIT;
+			//setTimer(DHT20_CHECK_CONECT_TIMER, 100);
+			status = CHECK_READY;
 			active = DHT20_OK;
 		  }
 		if(isFlagTimer(LCD_TIMER)){

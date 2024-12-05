@@ -1,24 +1,68 @@
-16:13:59 **** Incremental Build of configuration Debug for project logic-design-project ****
+16:59:51 **** Incremental Build of configuration Debug for project logic-design-project ****
 make -j8 all 
 arm-none-eabi-gcc "../Core/Src/global.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/global.d" -MT"Core/Src/global.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/global.o"
-arm-none-eabi-gcc -o "logic-design-project.elf" @"objects.list"   -mcpu=cortex-m3 -T"E:\logic-design-project\logic-design-project\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="logic-design-project.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+arm-none-eabi-gcc -o "logic-design-project.elf" @"objects.list"   -mcpu=cortex-m3 -T"E:\logic-design-project\logic-design-project\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="logic-design-project.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: logic-design-project.elf
  
 arm-none-eabi-size   logic-design-project.elf 
 arm-none-eabi-objdump -h -S  logic-design-project.elf  > "logic-design-project.list"
 arm-none-eabi-objcopy  -O binary  logic-design-project.elf  "logic-design-project.bin"
    text	   data	    bss	    dec	    hex	filename
-  33672	    128	   1888	  35688	   8b68	logic-design-project.elf
+  39452	    496	   1928	  41876	   a394	logic-design-project.elf
 Finished building: default.size.stdout
  
 Finished building: logic-design-project.bin
  
 Finished building: logic-design-project.list
  
-16:14:05 **** Incremental Build of configuration Debug for project logic-design-project ****
+16:59:58 **** Incremental Build of configuration Debug for project logic-design-project ****
 make -j8 all 
 arm-none-eabi-size   logic-design-project.elf 
    text	   data	    bss	    dec	    hex	filename
-  33672	    128	   1888	  35688	   8b68	logic-design-project.elf
+  39452	    496	   1928	  41876	   a394	logic-design-project.elf
 Finished building: default.size.stdout
+ 
+17:01:58 **** Incremental Build of configuration Debug for project logic-design-project ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/global.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/global.d" -MT"Core/Src/global.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/global.o"
+arm-none-eabi-gcc -o "logic-design-project.elf" @"objects.list"   -mcpu=cortex-m3 -T"E:\logic-design-project\logic-design-project\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="logic-design-project.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: logic-design-project.elf
+ 
+arm-none-eabi-size   logic-design-project.elf 
+arm-none-eabi-objdump -h -S  logic-design-project.elf  > "logic-design-project.list"
+arm-none-eabi-objcopy  -O binary  logic-design-project.elf  "logic-design-project.bin"
+   text	   data	    bss	    dec	    hex	filename
+  39452	    496	   1928	  41876	   a394	logic-design-project.elf
+Finished building: default.size.stdout
+ 
+Finished building: logic-design-project.bin
+ 
+Finished building: logic-design-project.list
+ 
+17:06:40 **** Incremental Build of configuration Debug for project logic-design-project ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/global.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/global.d" -MT"Core/Src/global.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/global.o"
+../Core/Src/global.c: In function 'global_fsm':
+../Core/Src/global.c:137:13: error: 'C' undeclared (first use in this function)
+  137 |    status = C;
+      |             ^
+../Core/Src/global.c:137:13: note: each undeclared identifier is reported only once for each function it appears in
+make: *** [Core/Src/subdir.mk:49: Core/Src/global.o] Error 1
+"make -j8 all" terminated with exit code 2. Build might be incomplete.
+17:06:52 **** Incremental Build of configuration Debug for project logic-design-project ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/global.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/global.d" -MT"Core/Src/global.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/global.o"
+arm-none-eabi-gcc -o "logic-design-project.elf" @"objects.list"   -mcpu=cortex-m3 -T"E:\logic-design-project\logic-design-project\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="logic-design-project.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: logic-design-project.elf
+ 
+arm-none-eabi-size   logic-design-project.elf 
+arm-none-eabi-objdump -h -S  logic-design-project.elf  > "logic-design-project.list"
+arm-none-eabi-objcopy  -O binary  logic-design-project.elf  "logic-design-project.bin"
+   text	   data	    bss	    dec	    hex	filename
+  39452	    496	   1928	  41876	   a394	logic-design-project.elf
+Finished building: default.size.stdout
+ 
+Finished building: logic-design-project.bin
+ 
+Finished building: logic-design-project.list
  
