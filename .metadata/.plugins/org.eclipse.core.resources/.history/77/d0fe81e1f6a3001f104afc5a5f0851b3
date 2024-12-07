@@ -1,0 +1,13 @@
+/*
+ * dht20.h
+ *
+ *  Created on: Nov 16, 2024
+ *      Author: thuyh
+ */
+
+#ifndef SRC_DHT20_H_
+#define SRC_DHT20_H_
+
+
+
+#endif /* SRC_DHT20_H_ */

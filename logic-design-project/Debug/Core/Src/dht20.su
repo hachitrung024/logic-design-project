@@ -1,0 +1,10 @@
+dht20.c:12:6:DHT20_Init	16	static
+dht20.c:25:9:DHT20_IsConnected	32	static
+dht20.c:33:9:DHT20_RequestData	32	static
+dht20.c:43:9:DHT20_ReadData	40	static
+dht20.c:64:9:DHT20_Convert	32	static
+dht20.c:84:9:DHT20_Read	24	static
+dht20.c:104:9:DHT20_ReadStatus	32	static
+dht20.c:111:9:DHT20_IsCalibrated	16	static
+dht20.c:115:9:DHT20_IsMeasuring	16	static
+dht20.c:119:9:DHT20_CRC8	24	static

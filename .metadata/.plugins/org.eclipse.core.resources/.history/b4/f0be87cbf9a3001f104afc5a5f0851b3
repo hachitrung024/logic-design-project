@@ -1,0 +1,30 @@
+/*
+ * global.h
+ *
+ *  Created on: Nov 16, 2024
+ *      Author: hachi
+ */
+
+#ifndef INC_GLOBAL_H_
+#define INC_GLOBAL_H_
+#include "dht20.h"
+
+#include "main.h"
+#include "software_timer.h"
+typedef enum{
+	INIT,
+	CHECK_CONNECTION,
+	CHECK_READY,
+    REQUEST_DATA,
+    READ_DATA,
+    CONVERT_DATA,
+	SEND_DATA,
+	DONE,
+	ERROR_STATE
+} state;
+extern state status;
+void global_init();
+void global_fsm();
+
+
+#endif /* INC_GLOBAL_H_ */

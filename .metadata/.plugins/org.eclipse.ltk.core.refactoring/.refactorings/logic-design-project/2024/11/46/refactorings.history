@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Move &apos;dht20.h&apos; to &apos;Inc&apos;" description="Move &apos;dht20.h&apos; to &apos;Inc&apos;" destination="Core/Inc" element1="Core/Src/dht20.h" flags="7" id="org.eclipse.ltk.core.refactoring.move.resources" resources="1" stamp="1731746621307" updateReferences="true"/>
+</session>
