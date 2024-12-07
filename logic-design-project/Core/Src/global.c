@@ -7,7 +7,7 @@
 
 #include "global.h"
 state status;
-
+uint8_t lcd_error_flag = 0;
 DHT20_t dht20;   // Định nghĩa cấu trúc DHT20
 status_active active;      // Định nghĩa biến trạng thái hoạt động
 static uint8_t lcd_status;
@@ -21,29 +21,35 @@ static void lcd_send_buffer(){
 }
 
 void global_init(){
-//	lcd_initialize();
+	lcd_initialize();
 	DHT20_Init(&dht20, &hi2c1);
 	active=DHT20_OK;
 	setTimer(GLOBAL_TIMER, 1000); // Cho khoi dong cac thiet bi
 	status = INIT;
+	setTimer(ERROR_CHECK_TIMER, 1000);
 }
 
 void watchdog(){
-	if(active == DHT20_ERROR_CONNECT){
-		status = ERROR_STATE;
-		setTimer(GLOBAL_TIMER, 10000);
+	if(isFlagTimer(ERROR_CHECK_TIMER)){
 		if(active == DHT20_ERROR_CONNECT){
-			snprintf(lcd_buffer_1,17,"DHT20 E_CONNECT");
-			snprintf(lcd_buffer_2,17,"RECONNECTING ");
-			lcd_send_buffer();
+			status = ERROR_STATE;
+			setTimer(GLOBAL_TIMER, 10000);
+			if(active == DHT20_ERROR_CONNECT){
+				snprintf(lcd_buffer_1,17,"DHT20 E_CONNECT");
+				snprintf(lcd_buffer_2,17,"RECONNECTING ");
+				lcd_send_buffer();
+			}
 		}
+		if(HAL_I2C_IsDeviceReady(&hi2c1, 0x21<<1, 1, HAL_MAX_DELAY)!=HAL_OK){
+			lcd_error_flag = 1;
+		}
+		setTimer(ERROR_CHECK_TIMER, 1000);
 	}
 }
 
 void global_fsm(){
 	switch(status){
 	case INIT:
-		lcd_init_fsm();
 		if(isFlagTimer(GLOBAL_TIMER)){
 			setTimer(UPDATE_TIMER, UPDATE_CYCLE);
 			setTimer(GLOBAL_TIMER, 100);
@@ -62,11 +68,9 @@ void global_fsm(){
 		}
 		break;
 	case CHECK_READY:
-		if(isFlagTimer(GLOBAL_TIMER)){
-			if(!DHT20_IsMeasuring(&dht20)){
-				setTimer(GLOBAL_TIMER, 20);
-				status = REQUEST_DATA;
-			}
+		if(!DHT20_IsMeasuring(&dht20)){
+			setTimer(GLOBAL_TIMER, 20);
+			status = REQUEST_DATA;
 		}
 		break;
 	case REQUEST_DATA:
@@ -105,6 +109,11 @@ void global_fsm(){
 		}
 		break;
 	case SEND_DATA_LCD:
+		if(lcd_error_flag==1 && HAL_I2C_IsDeviceReady(&hi2c1, 0x21<<1, 1, HAL_MAX_DELAY)==HAL_OK){
+			lcd_initialize();
+			lcd_error_flag=0;
+		}
+
 	    if (isFlagTimer(UPDATE_TIMER)) {
 	        setTimer(UPDATE_TIMER, UPDATE_CYCLE);
 	        snprintf(lcd_buffer_1, 17, "Temp: %.2f %cC  ", dht20.temperature, 0xDF);
@@ -127,17 +136,12 @@ void global_fsm(){
 					snprintf(lcd_buffer_1,17,"Time out! DHT20");
 					snprintf(lcd_buffer_2,17,"Can't connect");
 					lcd_send_buffer();
+					setTimer(GLOBAL_TIMER, 100);
 				}
 			}
 			status = CHECK_READY;
 			active = DHT20_OK;
 		  }
-		if(isFlagTimer(LCD_TIMER)){
-			setTimer(GLOBAL_TIMER, 1000);
-			status = INIT;
-		}
-	    break;
-
 	default :
 		break;
 	}

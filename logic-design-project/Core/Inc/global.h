@@ -31,6 +31,7 @@ typedef enum{
 	GLOBAL_TIMER,
 	UPDATE_TIMER,
 	LCD_TIMER,
+	ERROR_CHECK_TIMER
 } timerID;
 extern state status;
 void global_init();
