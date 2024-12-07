@@ -12,7 +12,6 @@ typedef enum {
 	DHT20_OK                   , //Trạng thái không có lỗi, mọi thứ hoạt động tốt
     DHT20_ERROR_CHECKSUM       , // Lỗi khi kiểm tra tổng kiểm (checksum) không khớp.
     DHT20_ERROR_CONNECT        , // Lỗi khi không thể kết nối với cảm biến.
-    DHT20_MISSING_BYTES        , // Lỗi do thiếu dữ liệu từ cảm biến.
     DHT20_ERROR_BYTES_ALL_ZERO , // Lỗi khi tất cả các byte dữ liệu đọc từ cảm biến đều bằng 0.
     DHT20_ERROR_READ_TIMEOUT   , // Lỗi khi quá trình đọc dữ liệu bị quá thời gian quy định.
     DHT20_ERROR_LASTREAD         // Lỗi liên quan đến lần đọc cuối cùng từ cảm biến.
@@ -79,6 +78,4 @@ extern status_active active ;
 	// Hàm tính toán CRC để kiểm tra lỗi dữ liệu từ cảm biến.
 	uint8_t DHT20_CRC8(uint8_t *ptr, uint8_t len);
 
-	// Hàm đặt lại một thanh ghi cụ thể của cảm biến, trả về trạng thái sau khi thực hiện. Trả về 1 nếu thành công, 0 nếu không.
-	uint8_t DHT20_ResetRegister(DHT20_t *dht20, uint8_t reg);
 #endif  /* INS_DHT20_H_ */

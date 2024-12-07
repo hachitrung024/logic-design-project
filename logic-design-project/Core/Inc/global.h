@@ -18,15 +18,14 @@ I2C_HandleTypeDef hi2c1;
 #define UPDATE_CYCLE 1000
 typedef enum{
 	INIT,
-	IDLE,
 	CHECK_CONNECTION,
 	CHECK_READY,
     REQUEST_DATA,
     READ_DATA,
     CONVERT_DATA,
-	SEND_DATA,
+	SEND_DATA_LCD,
 	ERROR_STATE,
-	UPDATE_LED, // Thêm trạng thái
+	SEND_DATA_RGBLED, // Thêm trạng thái
 } state;
 typedef enum{
 	GLOBAL_TIMER,

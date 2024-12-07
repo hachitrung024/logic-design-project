@@ -1,10 +1,10 @@
-16:14:05 **** Incremental Build of configuration Debug for project logic-design-project ****
+13:23:57 **** Incremental Build of configuration Debug for project logic-design-project ****
 make -j8 all 
 arm-none-eabi-size   logic-design-project.elf 
    text	   data	    bss	    dec	    hex	filename
-  33672	    128	   1888	  35688	   8b68	logic-design-project.elf
+  46796	    496	   2256	  49548	   c18c	logic-design-project.elf
 Finished building: default.size.stdout
  
 
-16:14:05 Build Finished. 0 errors, 0 warnings. (took 328ms)
+13:23:58 Build Finished. 0 errors, 0 warnings. (took 609ms)
 

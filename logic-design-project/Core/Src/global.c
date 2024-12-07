@@ -7,7 +7,7 @@
 
 #include "global.h"
 state status;
-static state next;
+
 DHT20_t dht20;   // Định nghĩa cấu trúc DHT20
 status_active active;      // Định nghĩa biến trạng thái hoạt động
 static uint8_t lcd_status;
@@ -26,7 +26,6 @@ void global_init(){
 	active=DHT20_OK;
 	setTimer(GLOBAL_TIMER, 1000); // Cho khoi dong cac thiet bi
 	status = INIT;
-	next = INIT;
 }
 
 void watchdog(){
@@ -40,54 +39,48 @@ void watchdog(){
 		}
 	}
 }
+
 void global_fsm(){
 	switch(status){
 	case INIT:
 		lcd_init_fsm();
 		if(isFlagTimer(GLOBAL_TIMER)){
 			setTimer(UPDATE_TIMER, UPDATE_CYCLE);
+			setTimer(GLOBAL_TIMER, 100);
 			status = CHECK_CONNECTION;
 		}
 	 	 break;
-	case IDLE:
-		if(isFlagTimer(GLOBAL_TIMER)){
-			status = next;
-		}
-		break;
 	case CHECK_CONNECTION:
-		if(DHT20_IsConnected(&dht20) ){
-			active = DHT20_OK;
-			status = CHECK_READY;
-		}
-		else{
-			active = DHT20_ERROR_CONNECT;
-			status = ERROR_STATE;
+		if(isFlagTimer(GLOBAL_TIMER)){
+			if(DHT20_IsConnected(&dht20) ){
+				active = DHT20_OK;
+				status = CHECK_READY;
+			}
+			else{
+				active = DHT20_ERROR_CONNECT;
+			}
 		}
 		break;
 	case CHECK_READY:
-		if((DHT20_ReadStatus(&dht20) & 0x18) != 0x18){
-			DHT20_ResetSensor(&dht20);
-		 	setTimer(GLOBAL_TIMER, 1000);
-			next = CHECK_CONNECTION;
-			status = IDLE;
-		}
-		else {
-			setTimer(GLOBAL_TIMER, 20);
-			next = REQUEST_DATA;
-			status = IDLE;
+		if(isFlagTimer(GLOBAL_TIMER)){
+			if(!DHT20_IsMeasuring(&dht20)){
+				setTimer(GLOBAL_TIMER, 20);
+				status = REQUEST_DATA;
+			}
 		}
 		break;
 	case REQUEST_DATA:
-		if(HAL_GetTick() - dht20.lastRead >= 1000){
-			active = DHT20_RequestData(&dht20);
-			if (active == DHT20_OK){
-				setTimer(GLOBAL_TIMER, 80);
-				next = READ_DATA;
-				status = IDLE;
+		if(isFlagTimer(GLOBAL_TIMER)){
+			if(HAL_GetTick() - dht20.lastRead >= 1000){
+				active = DHT20_RequestData(&dht20);
+				if (active == DHT20_OK){
+					setTimer(GLOBAL_TIMER, 80);
+					status = READ_DATA;
+				}
 			}
-		}
-		else{
-			active = DHT20_ERROR_LASTREAD;
+			else{
+				active = DHT20_ERROR_LASTREAD;
+			}
 		}
 		break;
 	case READ_DATA:
@@ -97,34 +90,33 @@ void global_fsm(){
 				status = CONVERT_DATA;
 			}
 			else{
-				status = REQUEST_DATA;
+				status = CHECK_CONNECTION;
 			}
 		}
 		else{
 			active = DHT20_ERROR_READ_TIMEOUT;
+			status = REQUEST_DATA;
 		}
 		break;
 	case CONVERT_DATA:
 		active = DHT20_Convert(&dht20);
 		if(active == DHT20_OK){
-			status = SEND_DATA;
+			status = SEND_DATA_LCD;
 		}
 		break;
-	case SEND_DATA:
+	case SEND_DATA_LCD:
 	    if (isFlagTimer(UPDATE_TIMER)) {
 	        setTimer(UPDATE_TIMER, UPDATE_CYCLE);
 	        snprintf(lcd_buffer_1, 17, "Temp: %.2f %cC  ", dht20.temperature, 0xDF);
 	        snprintf(lcd_buffer_2, 17, "Humi: %.2f %%   ", dht20.humidity);
 	        lcd_send_buffer();
-
 	        // Chuyen sang LED de dieu khien
-	        status = UPDATE_LED;
+	        status = SEND_DATA_RGBLED;
 	    }
 	    break;
-	case UPDATE_LED:
+	case SEND_DATA_RGBLED:
 	    // Dieu chinh LED 1 (nhiet do) và LED 2 (do am)
 	    setting_led_RGB((int)dht20.temperature, (int)dht20.humidity);
-
 	    status = CHECK_READY;
 	    break;
 
@@ -135,11 +127,9 @@ void global_fsm(){
 					snprintf(lcd_buffer_1,17,"Time out! DHT20");
 					snprintf(lcd_buffer_2,17,"Can't connect");
 					lcd_send_buffer();
-					Error_Handler();
 				}
 			}
-			setTimer(GLOBAL_TIMER, 100);
-			status = INIT;
+			status = CHECK_READY;
 			active = DHT20_OK;
 		  }
 		if(isFlagTimer(LCD_TIMER)){

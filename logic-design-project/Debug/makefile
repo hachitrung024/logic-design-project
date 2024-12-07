@@ -64,8 +64,8 @@ all: main-build
 main-build: logic-design-project.elf secondary-outputs
 
 # Tool invocations
-logic-design-project.elf: $(OBJS) $(USER_OBJS) E:\Document_STM32_SIMULATION\Digital\ Project\logic-design-project\STM32F103RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "logic-design-project.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"E:\Document_STM32_SIMULATION\Digital Project\logic-design-project\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="logic-design-project.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+logic-design-project.elf: $(OBJS) $(USER_OBJS) E:\logic-design-project\logic-design-project\STM32F103RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "logic-design-project.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"E:\logic-design-project\logic-design-project\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="logic-design-project.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

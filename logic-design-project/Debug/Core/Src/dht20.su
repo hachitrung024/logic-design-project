@@ -8,5 +8,3 @@ dht20.c:104:9:DHT20_ReadStatus	32	static
 dht20.c:111:9:DHT20_IsCalibrated	16	static
 dht20.c:115:9:DHT20_IsMeasuring	16	static
 dht20.c:119:9:DHT20_CRC8	24	static
-dht20.c:133:9:DHT20_ResetSensor	24	static
-dht20.c:147:9:DHT20_ResetRegister	32	static
