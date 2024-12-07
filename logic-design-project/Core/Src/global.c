@@ -13,6 +13,7 @@ status_active active;      // Định nghĩa biến trạng thái hoạt động
 static uint8_t lcd_status;
 char lcd_buffer_1[17];
 char lcd_buffer_2[17];
+char uart_buffer [20];
 static void lcd_send_buffer(){
 	lcd_set_cursor(1, 0);
 	lcd_send_string(lcd_buffer_1);
@@ -120,9 +121,14 @@ void global_fsm(){
 	        snprintf(lcd_buffer_2, 17, "Humi: %.2f %%   ", dht20.humidity);
 	        lcd_send_buffer();
 	        // Chuyen sang LED de dieu khien
-	        status = SEND_DATA_RGBLED;
+	        status = SEND_DATA_ESP32 ;
 	    }
 	    break;
+	case SEND_DATA_ESP32:
+		snprintf(uart_buffer,17, "T: %.2f H: %.2f\n", dht20.temperature, dht20.humidity);
+		HAL_UART_Transmit_IT(&huart2, (uint8_t*)uart_buffer, 18);
+		status = SEND_DATA_RGBLED;
+		break;
 	case SEND_DATA_RGBLED:
 	    // Dieu chinh LED 1 (nhiet do) và LED 2 (do am)
 	    setting_led_RGB((int)dht20.temperature, (int)dht20.humidity);

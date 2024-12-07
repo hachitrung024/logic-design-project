@@ -22,10 +22,6 @@
 #define STOP_READ_DATA 	0b00001001	//EN = 0 RS = 1
 
 // Gui du lieu dieu khien
-/*
- * @brief
- * @param
- */
 void lcd_send_command(uint8_t command) {
     uint8_t buffer[4];
     // Doc 4-bit dau

@@ -15,6 +15,7 @@
 #include <lcd.h>
 #include "led_RGB.h"
 I2C_HandleTypeDef hi2c1;
+UART_HandleTypeDef huart2;
 #define UPDATE_CYCLE 1000
 typedef enum{
 	INIT,
@@ -24,6 +25,7 @@ typedef enum{
     READ_DATA,
     CONVERT_DATA,
 	SEND_DATA_LCD,
+	SEND_DATA_ESP32,
 	ERROR_STATE,
 	SEND_DATA_RGBLED, // Thêm trạng thái
 } state;
