@@ -121,20 +121,19 @@ void global_fsm(){
 	        snprintf(lcd_buffer_2, 17, "Humi: %.2f %%   ", dht20.humidity);
 	        lcd_send_buffer();
 	        // Chuyen sang LED de dieu khien
-	        status = SEND_DATA_ESP32 ;
+	        status = SEND_DATA_RGBLED ;
 	    }
+	    break;
+	case SEND_DATA_RGBLED:
+	    // Dieu chinh LED 1 (nhiet do) và LED 2 (do am)
+	    setting_led_RGB((int)dht20.temperature, (int)dht20.humidity);
+	    status = SEND_DATA_ESP32;
 	    break;
 	case SEND_DATA_ESP32:
 		snprintf(uart_buffer,17, "T: %.2f H: %.2f\n", dht20.temperature, dht20.humidity);
 		HAL_UART_Transmit_IT(&huart2, (uint8_t*)uart_buffer, 18);
-		status = SEND_DATA_RGBLED;
+		status = CHECK_READY;
 		break;
-	case SEND_DATA_RGBLED:
-	    // Dieu chinh LED 1 (nhiet do) và LED 2 (do am)
-	    setting_led_RGB((int)dht20.temperature, (int)dht20.humidity);
-	    status = CHECK_READY;
-	    break;
-
 	case ERROR_STATE:
 		if(active == DHT20_ERROR_CONNECT){
 			while(!DHT20_IsConnected(&dht20)){

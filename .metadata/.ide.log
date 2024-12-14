@@ -486,3 +486,7 @@
 2024-12-06 12:03:51,067 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
 2024-12-06 12:03:51,067 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
 2024-12-06 12:03:51,067 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2024-12-09 13:41:49,781 [INFO] Activator:177 - 
+
+
+2024-12-09 13:41:49,784 [INFO] Activator:178 - !SESSION log4j initialized

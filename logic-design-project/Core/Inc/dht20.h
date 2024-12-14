@@ -57,23 +57,14 @@ extern status_active active ;
 	// Hàm đọc trạng thái hiện tại của cảm biến DHT20. Trả về mã trạng thái hoặc mã lỗi nếu có.
 	uint8_t DHT20_ReadStatus(DHT20_t *dht20);
 
-	// Kiểm tra xem cảm biến DHT20 có được hiệu chuẩn (calibrated) hay không. Trả về true nếu có, false nếu không.
-	uint8_t DHT20_IsCalibrated(DHT20_t *dht20);
-
 	// Kiểm tra xem cảm biến DHT20 có đang đo đạc dữ liệu hay không. Trả về true nếu có, false nếu không.
 	uint8_t DHT20_IsMeasuring(DHT20_t *dht20);
-
-	// Trả về trạng thái nội bộ của cảm biến DHT20 (trạng thái cuối cùng sau lần đọc gần nhất).
-	uint8_t DHT20_InternalStatus(DHT20_t *dht20);
 
 	// Trả về thời gian (tính bằng mili giây) kể từ lần đọc dữ liệu cuối cùng từ cảm biến.
 	uint32_t DHT20_LastRead(DHT20_t *dht20);
 
 	// Trả về thời gian (tính bằng mili giây) kể từ lần yêu cầu đo dữ liệu cuối cùng từ cảm biến.
 	uint32_t DHT20_LastRequest(DHT20_t *dht20);
-
-	// Đặt lại cảm biến DHT20. Trả về số lượng thanh ghi được đặt lại hoặc mã lỗi nếu có.
-	uint8_t DHT20_ResetSensor(DHT20_t *dht20);
 
 	// Hàm tính toán CRC để kiểm tra lỗi dữ liệu từ cảm biến.
 	uint8_t DHT20_CRC8(uint8_t *ptr, uint8_t len);
